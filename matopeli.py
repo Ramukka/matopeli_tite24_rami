@@ -21,6 +21,8 @@ class Matopeli(QGraphicsView):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.paivita_peli)
         
+        self.pisteet = 0
+
         self.kaynnista_peli()
 
     def keyPressEvent(self, event):
@@ -55,6 +57,7 @@ class Matopeli(QGraphicsView):
         self.mato.insert(0, uusi_paa)
         
         if uusi_paa == self.ruoka:
+            self.pisteet += 1
             self.ruoka = self.lisaa_ruoka()
         else:
             self.mato.pop()
@@ -66,10 +69,12 @@ class Matopeli(QGraphicsView):
 
         rx, ry = self.ruoka
         self.scene().addRect(rx * SOLUN_KOKO, ry * SOLUN_KOKO, SOLUN_KOKO, SOLUN_KOKO, QPen(Qt.black), QBrush(Qt.red))
-
+        
         for osa in self.mato:
             x, y = osa
             self.scene().addRect(x * SOLUN_KOKO, y * SOLUN_KOKO, SOLUN_KOKO, SOLUN_KOKO, QPen(Qt.black), QBrush(Qt.black))
+
+        self.scene().addText(f"Pisteet: {self.pisteet}", QFont("Arial", 12))
         
     def kaynnista_peli(self):
         self.suunta = Qt.Key_Right
